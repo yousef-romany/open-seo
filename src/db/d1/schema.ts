@@ -15,3 +15,4 @@ export * from "../telemetry.schema";
 export * from "../ai-visibility.schema";
 export * from "../local-seo.schema";
 export * from "../page-optimizer.schema";
+export * from "../action-center.schema";

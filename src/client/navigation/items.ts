@@ -3,12 +3,16 @@ import {
   Bot,
   Brain,
   ChartLine,
+  ChartNoAxesCombined,
   ClipboardCheck,
   FileText,
   Globe,
+  GitMerge,
   LayoutDashboard,
+  ListChecks,
   Link2,
   MessageSquare,
+  RefreshCw,
   ScanText,
   Search,
   TrendingUp,
@@ -24,6 +28,11 @@ const projectNavItems = [
     // Without exact matching, the index path is a prefix of every project
     // route and the Dashboard item would render active everywhere.
     activeOptions: { exact: true, includeSearch: false },
+  },
+  {
+    to: "/p/$projectId/action-center" as const,
+    label: "Action Center",
+    icon: ListChecks,
   },
   {
     to: "/p/$projectId/keywords" as const,
@@ -46,6 +55,16 @@ const projectNavItems = [
     icon: GoogleGlyphMuted,
   },
   {
+    to: "/p/$projectId/content-refresh" as const,
+    label: "Content Refresh",
+    icon: RefreshCw,
+  },
+  {
+    to: "/p/$projectId/keyword-cannibalization" as const,
+    label: "Cannibalization",
+    icon: GitMerge,
+  },
+  {
     to: "/p/$projectId/domain" as const,
     label: "Domain Overview",
     icon: Globe,
@@ -59,6 +78,16 @@ const projectNavItems = [
     to: "/p/$projectId/page-optimizer" as const,
     label: "Page Optimizer",
     icon: ScanText,
+  },
+  {
+    to: "/p/$projectId/content-brief" as const,
+    label: "Content Briefs",
+    icon: FileText,
+  },
+  {
+    to: "/p/$projectId/seo-results" as const,
+    label: "SEO Results",
+    icon: ChartNoAxesCombined,
   },
   {
     to: "/p/$projectId/audit" as const,
@@ -128,7 +157,7 @@ export function getProjectNavGroups(projectId: string) {
   return [
     {
       label: "Overview",
-      items: [byPath("/p/$projectId")],
+      items: [byPath("/p/$projectId"), byPath("/p/$projectId/action-center")],
     },
     {
       label: "Research",
@@ -150,9 +179,13 @@ export function getProjectNavGroups(projectId: string) {
       label: "My Site",
       items: [
         byPath("/p/$projectId/search-performance"),
+        byPath("/p/$projectId/content-refresh"),
+        byPath("/p/$projectId/keyword-cannibalization"),
         byPath("/p/$projectId/rank-tracking"),
         byPath("/p/$projectId/saved"),
+        byPath("/p/$projectId/content-brief"),
         byPath("/p/$projectId/page-optimizer"),
+        byPath("/p/$projectId/seo-results"),
         byPath("/p/$projectId/audit"),
       ],
     },

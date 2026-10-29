@@ -26,5 +26,6 @@ export const pageOptimizerProjectSchema = optimizePageSchema.pick({
 
 export const pageOptimizerTaskUpdateSchema = optimizePageSchema.extend({
   taskId: z.string().trim().min(1).max(500),
+  taskTitle: z.string().trim().min(1).max(300).optional(),
   status: z.enum(["todo", "in_progress", "done"]),
 });

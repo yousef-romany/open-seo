@@ -302,6 +302,20 @@
       "when": 1793275031119,
       "tag": "0042_uneven_millenium_guard",
       "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "7",
+      "when": 1793295476616,
+      "tag": "0043_gifted_roulette",
+      "breakpoints": true
+    },
+    {
+      "idx": 44,
+      "version": "7",
+      "when": 1793296575254,
+      "tag": "0044_big_angel",
+      "breakpoints": true
     }
   ]
 }

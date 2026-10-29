@@ -161,6 +161,45 @@ export interface PageOptimizerTaskState {
   updatedAt: string;
 }
 
+export interface SeoResultTracker {
+  taskId: string;
+  taskTitle: string;
+  url: string;
+  targetKeyword: string;
+  completedAt: string;
+  status: "waiting" | "improving" | "steady" | "needs_attention";
+  daysMeasured: number;
+  baseline: SeoResultMetrics | null;
+  current: SeoResultMetrics | null;
+  changes: {
+    clicksPerDay: number | null;
+    impressionsPerDay: number | null;
+    ctr: number | null;
+    position: number | null;
+  };
+}
+
+export interface SeoResultMetrics {
+  startDate: string;
+  endDate: string;
+  days: number;
+  clicks: number;
+  impressions: number;
+  ctr: number;
+  position: number;
+}
+
+export interface SeoResultsReport {
+  generatedAt: string;
+  trackers: SeoResultTracker[];
+  summary: {
+    total: number;
+    waiting: number;
+    improving: number;
+    needsAttention: number;
+  };
+}
+
 export interface PageOptimizerAuditTask {
   issueType: string;
   severity: "critical" | "warning" | "info";

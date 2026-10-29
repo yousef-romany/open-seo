@@ -456,6 +456,20 @@
       "when": 1793275029823,
       "tag": "0064_supreme_thunderbolt_ross",
       "breakpoints": true
+    },
+    {
+      "idx": 65,
+      "version": "6",
+      "when": 1793295475908,
+      "tag": "0065_lush_captain_universe",
+      "breakpoints": true
+    },
+    {
+      "idx": 66,
+      "version": "6",
+      "when": 1793296574499,
+      "tag": "0066_sudden_glorian",
+      "breakpoints": true
     }
   ]
 }

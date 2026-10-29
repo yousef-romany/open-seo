@@ -40,17 +40,34 @@ async function updateTaskStatus(params: {
   url: string;
   targetKeyword: string;
   taskId: string;
+  taskTitle?: string;
   status: PageOptimizerTaskStatus;
 }): Promise<PageOptimizerTaskState> {
   const updatedAt = new Date().toISOString();
+  const existing = (
+    await PageOptimizerTaskRepository.listTaskStates({
+      projectId: params.projectId,
+      url: normalizePageOptimizerUrl(params.url),
+      keywordKey: pageOptimizerKeywordKey(params.targetKeyword),
+    })
+  ).find((state) => state.taskId === params.taskId);
+  const completedAt =
+    params.status === "done"
+      ? existing?.status === "done"
+        ? existing.updatedAt
+        : updatedAt
+      : null;
   await PageOptimizerTaskRepository.upsertTaskState({
     id: crypto.randomUUID(),
     projectId: params.projectId,
     url: normalizePageOptimizerUrl(params.url),
     keywordKey: pageOptimizerKeywordKey(params.targetKeyword),
+    targetKeyword: params.targetKeyword.trim(),
     taskId: params.taskId,
+    taskTitle: params.taskTitle?.trim() || params.taskId,
     status: params.status,
     updatedByUserId: params.userId,
+    completedAt,
     updatedAt,
   });
   return { taskId: params.taskId, status: params.status, updatedAt };

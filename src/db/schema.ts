@@ -13,6 +13,7 @@ import * as sqliteTelemetry from "./telemetry.schema";
 import * as sqliteAiVisibility from "./ai-visibility.schema";
 import * as sqliteLocalSeo from "./local-seo.schema";
 import * as sqlitePageOptimizer from "./page-optimizer.schema";
+import * as sqliteActionCenter from "./action-center.schema";
 import * as pgApp from "./pg/app.schema";
 import * as pgProjectContext from "./pg/project-context.schema";
 import * as pgReports from "./pg/reports.schema";
@@ -27,6 +28,7 @@ import * as pgTelemetry from "./pg/telemetry.schema";
 import * as pgAiVisibility from "./pg/ai-visibility.schema";
 import * as pgLocalSeo from "./pg/local-seo.schema";
 import * as pgPageOptimizer from "./pg/page-optimizer.schema";
+import * as pgActionCenter from "./pg/action-center.schema";
 
 // Canonical schema barrel. Repositories import their tables from here and the
 // provider-aware `db` from "@/db", so each repository is written ONCE for both
@@ -51,7 +53,8 @@ type AppSchema = typeof sqliteApp &
   typeof sqliteTelemetry &
   typeof sqliteAiVisibility &
   typeof sqliteLocalSeo &
-  typeof sqlitePageOptimizer;
+  typeof sqlitePageOptimizer &
+  typeof sqliteActionCenter;
 
 const runtimeSchema =
   getDatabaseProvider() === "postgres"
@@ -70,6 +73,7 @@ const runtimeSchema =
         ...pgAiVisibility,
         ...pgLocalSeo,
         ...pgPageOptimizer,
+        ...pgActionCenter,
       }
     : {
         ...sqliteApp,
@@ -86,6 +90,7 @@ const runtimeSchema =
         ...sqliteAiVisibility,
         ...sqliteLocalSeo,
         ...sqlitePageOptimizer,
+        ...sqliteActionCenter,
       };
 
 // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- guarded by schema-parity.test.ts
@@ -147,4 +152,5 @@ export const {
   localRankResults,
   pageOptimizerRuns,
   pageOptimizerTaskStatuses,
+  seoActionStatuses,
 } = schema;

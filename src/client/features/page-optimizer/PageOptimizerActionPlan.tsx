@@ -68,7 +68,11 @@ export function PageOptimizerActionPlan({
     retry: false,
   });
   const statusMutation = useMutation({
-    mutationFn: (update: { taskId: string; status: PageOptimizerTaskStatus }) =>
+    mutationFn: (update: {
+      taskId: string;
+      taskTitle: string;
+      status: PageOptimizerTaskStatus;
+    }) =>
       updatePageOptimizerTaskStatus({
         data: { ...request, ...update },
       }),
@@ -228,7 +232,11 @@ export function PageOptimizerActionPlan({
                     statusMutation.variables.taskId === task.id
                   }
                   onStatusChange={(status) =>
-                    statusMutation.mutate({ taskId: task.id, status })
+                    statusMutation.mutate({
+                      taskId: task.id,
+                      taskTitle: task.title,
+                      status,
+                    })
                   }
                 />
               ))}

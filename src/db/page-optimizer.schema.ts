@@ -56,11 +56,14 @@ export const pageOptimizerTaskStatuses = sqliteTable(
       .references(() => projects.id, { onDelete: "cascade" }),
     url: text("url").notNull(),
     keywordKey: text("keyword_key").notNull(),
+    targetKeyword: text("target_keyword").notNull().default(""),
     taskId: text("task_id").notNull(),
+    taskTitle: text("task_title").notNull().default(""),
     status: text("status", { enum: ["todo", "in_progress", "done"] })
       .notNull()
       .default("todo"),
     updatedByUserId: text("updated_by_user_id").notNull(),
+    completedAt: text("completed_at"),
     updatedAt: text("updated_at")
       .notNull()
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ','now'))`),

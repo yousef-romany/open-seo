@@ -97,6 +97,7 @@ export const updatePageOptimizerTaskStatus = createServerFn({ method: "POST" })
       url: data.url,
       targetKeyword: data.targetKeyword,
       taskId: data.taskId,
+      taskTitle: data.taskTitle,
       status: data.status,
     }),
   );
