@@ -261,6 +261,13 @@ async function getLatestAuditForProject(projectId: string) {
   });
 }
 
+async function getLatestCompletedAuditForProject(projectId: string) {
+  return db.query.audits.findFirst({
+    where: and(eq(audits.projectId, projectId), eq(audits.status, "completed")),
+    orderBy: [desc(audits.completedAt), desc(audits.startedAt)],
+  });
+}
+
 async function getIssuesForAudit(
   auditId: string,
   filters: { severity?: "critical" | "warning" | "info"; issueType?: string },
@@ -429,6 +436,7 @@ export const AuditRepository = {
   insertLighthouseResults,
   getAuditForProject,
   getLatestAuditForProject,
+  getLatestCompletedAuditForProject,
   getIssuesForAudit,
   getPagesForAudit,
   countPagesByFetchClass,

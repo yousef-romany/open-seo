@@ -49,7 +49,7 @@ export function AuditDetail({
   auditId: string;
   tab: string;
   onBack: () => void;
-  onTabChange: (tab: "issues" | "pages" | "performance") => void;
+  onTabChange: (tab: "issues" | "on-page" | "pages" | "performance") => void;
 }) {
   const statusQuery = useQuery({
     queryKey: ["audit-status", projectId, auditId],
@@ -130,7 +130,8 @@ export function AuditDetail({
               {!isRunning && <StatusBadge status={status.status} />}
             </div>
             <p className="text-sm text-muted-foreground">
-              Site audit &middot; Started {formatStartedAt(status.startedAt)}
+              Site and on-page audit &middot; Started{" "}
+              {formatStartedAt(status.startedAt)}
             </p>
           </div>
         </div>

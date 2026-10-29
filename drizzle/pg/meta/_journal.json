@@ -288,6 +288,20 @@
       "when": 1792713961615,
       "tag": "0040_bind_api_keys_to_organization",
       "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1793227853466,
+      "tag": "0041_happy_mole_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1793275031119,
+      "tag": "0042_uneven_millenium_guard",
+      "breakpoints": true
     }
   ]
 }

@@ -34,7 +34,10 @@ export function LaunchView({
   return (
     <div className="px-4 py-4 md:px-6 md:py-6 pb-24 md:pb-8 overflow-auto">
       <div className="mx-auto max-w-7xl space-y-4">
-        <PageHeader title="Site Audit" />
+        <PageHeader
+          title="Site Audit"
+          description="Check technical health and on-page SEO, including titles, search descriptions, headings, content, images, links, indexability, and performance."
+        />
 
         <LaunchFormCard
           launchForm={controller.launchForm}

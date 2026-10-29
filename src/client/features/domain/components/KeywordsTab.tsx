@@ -6,13 +6,18 @@ import {
   type ReactNode,
 } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Download, Save, Sheet } from "lucide-react";
+import { ChevronRight, CircleHelp, Download, Save, Sheet } from "lucide-react";
 import {
   TableBulkActionBar,
   TableBulkActionButton,
   TableBulkExportMenu,
 } from "@/client/components/table/TableBulkActionBar";
 import { QueryError } from "@/client/components/QueryState";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/client/components/ui/collapsible";
 import { TablePagination } from "@/client/components/table/TablePagination";
 import { DomainPageLink } from "@/client/features/domain/components/DomainPageLink";
 import { DomainKeywordsTable } from "@/client/features/domain/components/DomainKeywordsTable";
@@ -62,10 +67,10 @@ const KEYWORD_TEXT_FILTERS = [
   },
 ] as const;
 const KEYWORD_RANGE_FILTERS = [
-  { title: "Traffic", minKey: "minTraffic", maxKey: "maxTraffic" },
-  { title: "Volume", minKey: "minVol", maxKey: "maxVol" },
+  { title: "Estimated visits", minKey: "minTraffic", maxKey: "maxTraffic" },
+  { title: "Monthly searches", minKey: "minVol", maxKey: "maxVol" },
   { title: "CPC (USD)", minKey: "minCpc", maxKey: "maxCpc", step: "0.01" },
-  { title: "Score (KD)", minKey: "minKd", maxKey: "maxKd" },
+  { title: "Difficulty (0–100)", minKey: "minKd", maxKey: "maxKd" },
   { title: "Rank", minKey: "minRank", maxKey: "maxRank" },
 ] as const;
 
@@ -285,6 +290,7 @@ export function KeywordsTab({
         toolbar={
           <>
             {tabs}
+            <KeywordResultsGuide />
             <DomainTableToolbar
               overBudgetLimit={filtersOverBudget ? maxConditions : null}
               showFilters={showFilters}
@@ -332,5 +338,80 @@ export function KeywordsTab({
         }
       />
     </>
+  );
+}
+
+const KEYWORD_COLUMN_HELP = [
+  {
+    label: "Rank",
+    text: "This domain's Google position. 1–10 means this page already performs well.",
+  },
+  {
+    label: "Searches/mo",
+    text: "Estimated monthly searches. It shows demand, not guaranteed traffic.",
+  },
+  {
+    label: "Est. visits",
+    text: "Estimated visits this domain gets from the ranking. It is not analytics data.",
+  },
+  {
+    label: "CPC",
+    text: "What advertisers may pay per click. Higher values can suggest buying intent.",
+  },
+  {
+    label: "Difficulty",
+    text: "How hard the top 10 may be to reach. Lower is usually easier; relevance still comes first.",
+  },
+  {
+    label: "Ranking page",
+    text: "The page Google rewards. Open it to learn the expected format and depth.",
+  },
+] as const;
+
+function KeywordResultsGuide() {
+  return (
+    <Collapsible className="border-b border-border bg-info/5">
+      <CollapsibleTrigger className="group flex w-full items-center gap-2 px-4 py-3 text-left outline-none hover:bg-info/5 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset">
+        <CircleHelp className="size-4 shrink-0 text-info" />
+        <span className="min-w-0 flex-1">
+          <span className="block text-sm font-medium">
+            How to use these keyword results
+          </span>
+          <span className="block text-xs text-muted-foreground">
+            Choose relevant terms, judge the opportunity, then study the page
+            that already ranks.
+          </span>
+        </span>
+        <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-transform group-data-panel-open:rotate-90" />
+      </CollapsibleTrigger>
+      <CollapsibleContent>
+        <div className="space-y-3 px-4 pb-4">
+          <ol className="grid gap-2 text-sm md:grid-cols-3">
+            <li className="rounded-lg border border-border bg-card p-3">
+              <span className="font-medium">1. Check relevance.</span> Ignore a
+              keyword unless it matches something you sell or can answer well.
+            </li>
+            <li className="rounded-lg border border-border bg-card p-3">
+              <span className="font-medium">2. Judge the opportunity.</span>{" "}
+              Compare Difficulty with monthly searches and CPC. No single number
+              decides whether a keyword is good.
+            </li>
+            <li className="rounded-lg border border-border bg-card p-3">
+              <span className="font-medium">3. Study the result.</span> Open the
+              ranking page to see the format and depth Google currently rewards,
+              then select and save the best terms.
+            </li>
+          </ol>
+          <dl className="grid gap-x-6 gap-y-2 text-xs sm:grid-cols-2 lg:grid-cols-3">
+            {KEYWORD_COLUMN_HELP.map((item) => (
+              <div key={item.label}>
+                <dt className="font-medium text-foreground">{item.label}</dt>
+                <dd className="text-muted-foreground">{item.text}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
   );
 }

@@ -12,6 +12,7 @@ import {
   useSelectionAnchor,
 } from "@/client/components/table/DataTable";
 import { ExternalUrlCell } from "@/client/components/table/url";
+import { HelpLabel } from "@/client/components/HelpLabel";
 import { ScoreBadge } from "@/client/components/table/ScoreBadge";
 import { SortableHeader } from "@/client/components/table/SortableHeader";
 import {
@@ -61,7 +62,12 @@ export function DomainKeywordsTable({
     () => [
       makeSelectionColumn<KeywordRow>(selectAnchorRef),
       keywordColumnHelper.accessor("keyword", {
-        header: () => "Keyword",
+        header: () => (
+          <HelpLabel
+            label="Keyword"
+            helpText="The words a person types into Google."
+          />
+        ),
         cell: ({ getValue }) => (
           <span className="font-medium">{getValue()}</span>
         ),
@@ -70,6 +76,7 @@ export function DomainKeywordsTable({
         header: () => (
           <SortableHeader
             label="Rank"
+            helpText="This domain's current Google position. Position 1 is best."
             column={domainSortColumn(
               sortMode === "rank",
               currentSortOrder,
@@ -82,7 +89,8 @@ export function DomainKeywordsTable({
       keywordColumnHelper.accessor("searchVolume", {
         header: () => (
           <SortableHeader
-            label="Volume"
+            label="Searches/mo"
+            helpText="Estimated average monthly searches in the selected country. This is demand, not visits."
             column={domainSortColumn(
               sortMode === "volume",
               currentSortOrder,
@@ -95,7 +103,8 @@ export function DomainKeywordsTable({
       keywordColumnHelper.accessor("traffic", {
         header: () => (
           <SortableHeader
-            label="Traffic"
+            label="Est. visits"
+            helpText="Estimated monthly organic visits this ranking brings to the domain. This is not analytics data."
             column={domainSortColumn(
               sortMode === "traffic",
               currentSortOrder,
@@ -109,7 +118,7 @@ export function DomainKeywordsTable({
         header: () => (
           <SortableHeader
             label="CPC"
-            helpText="Cost per click in USD."
+            helpText="Estimated advertiser cost per click in USD. A higher CPC can signal stronger commercial intent."
             column={domainSortColumn(sortMode === "cpc", currentSortOrder, () =>
               onSortClick("cpc"),
             )}
@@ -122,7 +131,12 @@ export function DomainKeywordsTable({
       }),
       keywordColumnHelper.display({
         id: "url",
-        header: () => "URL",
+        header: () => (
+          <HelpLabel
+            label="Ranking page"
+            helpText="The page from this domain that ranks for the keyword. Open it to study the content and search intent."
+          />
+        ),
         cell: ({ row }) => (
           <ExternalUrlCell
             value={row.original.url || row.original.relativeUrl}
@@ -137,8 +151,8 @@ export function DomainKeywordsTable({
       keywordColumnHelper.accessor("keywordDifficulty", {
         header: () => (
           <SortableHeader
-            label="Score"
-            helpText="Organic ranking difficulty (0-100): higher means harder to reach Google's top 10."
+            label="Difficulty"
+            helpText="Estimated difficulty of reaching Google's top 10, from 0 to 100. Lower is usually easier."
             column={domainSortColumn(
               sortMode === "score",
               currentSortOrder,

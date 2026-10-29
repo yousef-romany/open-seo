@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   Link2,
   MessageSquare,
+  ScanText,
   Search,
   TrendingUp,
 } from "lucide-react";
@@ -53,6 +54,11 @@ const projectNavItems = [
     to: "/p/$projectId/backlinks" as const,
     label: "Backlinks",
     icon: Link2,
+  },
+  {
+    to: "/p/$projectId/page-optimizer" as const,
+    label: "Page Optimizer",
+    icon: ScanText,
   },
   {
     to: "/p/$projectId/audit" as const,
@@ -146,6 +152,7 @@ export function getProjectNavGroups(projectId: string) {
         byPath("/p/$projectId/search-performance"),
         byPath("/p/$projectId/rank-tracking"),
         byPath("/p/$projectId/saved"),
+        byPath("/p/$projectId/page-optimizer"),
         byPath("/p/$projectId/audit"),
       ],
     },

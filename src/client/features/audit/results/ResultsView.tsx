@@ -30,8 +30,11 @@ import {
 } from "@/client/components/ui/alert";
 import { DataTableTabs } from "@/client/components/table/DataTableToolbar";
 import { TabsTrigger } from "@/client/components/ui/tabs";
-
-type ResultsTab = "issues" | "pages" | "performance";
+import {
+  ON_PAGE_ISSUE_TYPES,
+  ResultsTabDescription,
+  type ResultsTab,
+} from "@/client/features/audit/results/ResultsTabDescription";
 
 export function ResultsView({
   projectId,
@@ -55,6 +58,10 @@ export function ResultsView({
   const activeTab =
     tab === "performance" && !hasPerformanceTab ? "issues" : tab;
   const stats = useResultStats(pages, lighthouse);
+  const onPageIssues = useMemo(
+    () => issues.filter((issue) => ON_PAGE_ISSUE_TYPES.has(issue.issueType)),
+    [issues],
+  );
   const blockedCount = useMemo(
     () => pages.filter((page) => page.fetchClass === "blocked").length,
     [pages],
@@ -72,6 +79,7 @@ export function ResultsView({
   const tabs = (
     <ResultsHeader
       issueCount={issues.length}
+      onPageIssueCount={onPageIssues.length}
       pageCount={pages.length}
       lighthouseCount={lighthouse.length}
       hasPerformanceTab={hasPerformanceTab}
@@ -82,8 +90,8 @@ export function ResultsView({
           exportPerformance(lighthouse, pages, format);
           return;
         }
-        if (activeTab === "issues") {
-          exportIssues(issues, format);
+        if (activeTab === "issues" || activeTab === "on-page") {
+          exportIssues(activeTab === "on-page" ? onPageIssues : issues, format);
           return;
         }
         exportPages(pages, format);
@@ -155,6 +163,9 @@ export function ResultsView({
       />
 
       {activeTab === "issues" && <IssuesView issues={issues} tabs={tabs} />}
+      {activeTab === "on-page" && (
+        <IssuesView issues={onPageIssues} tabs={tabs} />
+      )}
       {activeTab === "pages" && (
         <PagesTable
           pages={pages}
@@ -222,6 +233,7 @@ function useResultStats(
 
 function ResultsHeader({
   issueCount,
+  onPageIssueCount,
   pageCount,
   lighthouseCount,
   hasPerformanceTab,
@@ -230,6 +242,7 @@ function ResultsHeader({
   onExport,
 }: {
   issueCount: number;
+  onPageIssueCount: number;
   pageCount: number;
   lighthouseCount: number;
   hasPerformanceTab: boolean;
@@ -239,6 +252,7 @@ function ResultsHeader({
 }) {
   const tabs: Array<{ tab: ResultsTab; label: string }> = [
     { tab: "issues", label: `Issues (${issueCount})` },
+    { tab: "on-page", label: `On-page SEO (${onPageIssueCount})` },
     { tab: "pages", label: `Pages (${pageCount})` },
     ...(hasPerformanceTab
       ? [
@@ -260,6 +274,7 @@ function ResultsHeader({
       actions={
         <ExportMenu actions={["sheets", "csv", "json"]} onExport={onExport} />
       }
+      description={<ResultsTabDescription activeTab={activeTab} />}
     >
       {tabs.map(({ label, tab }) => (
         <TabsTrigger key={tab} value={tab}>
